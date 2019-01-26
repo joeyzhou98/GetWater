@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 var express = require("express");
+var Fountain = require("models/fountain");
 var mongoose = require("mongoose");
 var app = express();
 
