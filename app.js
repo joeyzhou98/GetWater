@@ -7,12 +7,14 @@ var app = express();
 
 mongoose.connect(process.env.DATABASEURL);
 
+app.engine('html', require('ejs').renderFile);
+
 app.get("/", function(req, res) {
     Fountain.find({}).exec(function(err, allFountains) {
         if (err) {
             console.log(err);
         } else {
-            res.render("mainPage.ejs", {fountains: allFountains});
+            res.render("GetWaterFrontpage.html", {fountains: allFountains});
         }
     });
 });

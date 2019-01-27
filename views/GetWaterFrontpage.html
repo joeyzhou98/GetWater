@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<style>
+      #map {
+        height: 100vh;
+        width: 100%;
+       }
+    </style>
+    <meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GetWater</title>
+	<link rel="stylesheet" type="text/css" media="screen" href="GetWaterStyle.css" />
+	<script type="text/javascript" src="GetWaterFunctions.js"></script>
+ </head>
+  <body>
+	<div id="navigation">
+		<img src="GetWaterIcon.jpg" id="icon" alt="Get Water Icon"><img src="GetWaterLogo.jpg" id="logo" alt="Get Water Logo">
+	</div>
+	<div id="searchbar">
+		<form method="GET" action="https://www.google.com/search" >
+			<input type="text" name="search" placeholder="Please enter your location">
+			<a href="https://www.google.com/search"><img src="searchButton.jpeg" alt="Search Button" id="searchbutton"></a>
+		</form>
+	</div>
+	<br/><br/>
+	
+	<div id="map"></div>
+	
+	<button class="openform" onclick="openForm()">Newly found fountain?</button>
+	<div class="popupform" id="form">
+		<form action="/action_page.php" class="formbox">
+			<h2>Please enter the newly found fountain</h2>
+			<label for="location" id="filltitle"><b>Location</b></label>
+			<input type="text" placeholder="ex: 123 Main Street" name="location" required>
+			<label for="description" id="filltitle"><b>Description</b></label>
+			<input type="Description" placeholder="ex: Near to elevators" name="description" required>
+			<button type="submit" class="btn">Submit</button>
+			<button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+		</form>
+	</div>
+	<script>
+      function initMap() {
+        var map;
+        var array = <%- JSON.stringify(fountains) %>;
+        var lat = <%= fountains[0].lat %>;
+        var lng = <%= fountains[0].lng %>;
+        var center = {lat: lat, lng: lng };
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 17,
+            center: center
+        });
+        var infoWindow = new google.maps.InfoWindow;
+
+        var pos = {
+          lat: 45.4954,
+          lng: -73.5792
+        };
+
+        infoWindow.setPosition(pos);
+        infoWindow.setContent('Location found.');
+        infoWindow.open(map);
+        map.setCenter(pos);
+        
+        var marker, i;
+
+      	for (i = 0; i < array.length; i++) {
+      		marker = new google.maps.Marker({
+      			position: new google.maps.LatLng(array[i].lat, array[i].lng),
+      			map: map
+      		});
+      
+      		google.maps.event.addListener(marker, 'click', (function (marker, i) {
+      			return function () {
+      			  var contentString = "<strong>" + array[i].location + "</strong><p>" + array[i].description + "</p>";
+      				infoWindow.setContent(contentString);
+      				infoWindow.open(map, marker);
+      			}
+      		})(marker, i));
+      	}
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRbwquTPVaovtmiTFmYdedetxliONKD5Q&callback=initMap">
+    </script>
+  </body>
+</html>
