@@ -17,9 +17,11 @@
   },
   "homepage": "https://github.com/joeyzhou98/GetWater#readme",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "dotenv": "^6.2.0",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
-    "mongoose": "^5.4.7"
+    "mongoose": "^5.4.7",
+    "node-geocoder": "^3.22.0"
   }
 }
