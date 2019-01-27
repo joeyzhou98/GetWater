@@ -8,13 +8,13 @@ var app = express();
 mongoose.connect(process.env.DATABASEURL);
 
 app.get("/", function(req, res) {
-    Fountain.findOne({}), function(err, allFountains) {
+    Fountain.findOne({}).exec(function(err, allFountains) {
         if (err) {
-            console.log(err) 
+            console.log(err);
         } else {
             res.render("mainPage.ejs", {fountains: allFountains});
         }
-    }
+    });
 });
 
 app.listen(process.env.PORT, process.env.IP, function() {
