@@ -11,12 +11,19 @@
     </style>
   </head>
   <body>
+      
     <div id="map"></div>
     <script>
-          var map, infoWindow;
+     var fountainArray = [];
+     var counter = 0;
+     fountains.forEach(function(fountain) { 
+      tempList = [fountain.location, fountain.description, fountain.lat, fountain.lng, counter++]; 
+      fountainArray.push(tempList);
+     });
+        
       function initMap() {
-        var lat = <%= fountains.lat %>;
-        var lng = <%= fountains.lng %>;
+        var lat = <%= fountains[0].lat %>;
+        var lng = <%= fountains[0].lng %>;
         var center = {lat: lat, lng: lng };
         var map = new google.maps.Map(document.getElementById('map'), {
             zoom: 8,
@@ -28,13 +35,13 @@
         // Try HTML5 geolocation.
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
+            pos = {
               lat: position.coords.latitude,
               lng: position.coords.longitude
             };
 
             infoWindow.setPosition(pos);
-            infoWindow.setContent('Location found.');
+            infoWindow.setContent('Your Location');
             infoWindow.open(map);
             map.setCenter(pos);
           }, function() {
@@ -53,9 +60,13 @@
                               'Error: Your browser doesn\'t support geolocation.');
         infoWindow.open(map);
           
-        var contentString = `
-          <strong><%= fountains.location %></strong>
-          <p><%= fountains.description %></p>
+      }
+        var marker, i;
+
+	for (i = 0; i < fountainArray.length; i++) {
+         var contentString = `
+          <strong><%= fountainArray[i][0] %></strong>
+          <p><%= fountainArray[i][1] %></p>
         `;
         var infowindow = new google.maps.InfoWindow({
           content: contentString
@@ -67,8 +78,19 @@
         marker.addListener('click', function() {
           infowindow.open(map, marker);
         });
-          
-      }
+		marker = new google.maps.Marker({
+			position: new google.maps.LatLng(fountainArray[i][2], fountainArray[i][3]),
+			map: map
+		});
+
+		google.maps.event.addListener(marker, 'click', (function (marker, i) {
+			return function () {
+				infowindow.setContent(contentString);
+				infowindow.open(map, marker);
+			}
+		})(marker, i));
+	}
+        
         
     </script>
     <script async defer
