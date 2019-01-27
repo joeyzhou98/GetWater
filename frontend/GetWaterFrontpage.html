@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GetWater</title>
+	<link rel="stylesheet" type="text/css" media="screen" href="GetWaterStyle.css" />
+	<script type="text/javascript" src="GetWaterFunctions.js"></script>
+ </head>
+  <body>
+	<div id="navigation">
+		<img src="GetWaterIcon.jpg" id="icon" alt="Get Water Icon"><img src="GetWaterLogo.jpg" id="logo" alt="Get Water Logo">
+	</div>
+	<div id="searchbar">
+		<form method="GET" action="https://www.google.com/search" >
+			<input type="text" name="search" placeholder="Please enter your location">
+			<a href="https://www.google.com/search"><img src="searchButton.jpeg" alt="Search Button" id="searchbutton"></a>
+		</form>
+	</div>
+	<br/><br/>
+	
+	<div id ="map">MAP</div>
+	
+	<button class="openform" onclick="openForm()">Newly found fountain?</button>
+	<div class="popupform" id="form">
+		<form action="/action_page.php" class="formbox">
+			<h2>Please enter the newly found fountain</h2>
+			<label for="location" id="filltitle"><b>Location</b></label>
+			<input type="text" placeholder="ex: 123 Main Street" name="location" required>
+			<label for="description" id="filltitle"><b>Description</b></label>
+			<input type="Description" placeholder="ex: Near to elevators" name="description" required>
+			<button type="submit" class="btn">Submit</button>
+			<button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+		</form>
+	</div
+  </body>
+</html>
