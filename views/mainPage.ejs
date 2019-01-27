@@ -9,37 +9,33 @@
        }
     </style>
   </head>
-  <body onload="getLocation()">
-
-
-    <p id="currentLoc"></p>
+  <bodlngy>
     <div id="map"></div>
     <script>
-    var targetLat;
-    var targetLon;
-    var x = document.getElementById("currentLoc");
-    function getLocation() {
-    if (navigator.geolocation) {
-     var loc = navigator.geolocation.getCurrentPosition(showPosition);
-     } else { 
-    x.innerHTML = "Geolocation is not supported by this browser.";
-     }
-}
-function coordinates(position){
-   targetLat = position.coords.latitude;
-   targetLon = position.coords.longitude;
-}
-function showPosition(position) {
-  x.innerHTML = "Latitude: " + position.coords.latitude + 
-  "<br>Longitude: " + position.coords.longitude; 
-}
-function initMap() {
-   mongoose.fountains.find( {} );
-  var uluru = {lat: -25.344, lng: 131.036};
-  var map = new google.maps.Map(
-      document.getElementById('map'), {zoom: 4, center: uluru});
-  var marker = new google.maps.Marker({position: uluru, map: map});
-}
+      function initMap() {
+        var lat = <%= fountains.lat %>;
+        var lng = <%= fountains.lng %>;
+        var center = {lat: lat, lng: lng };
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 8,
+            center: center,
+            scrollwheel: false
+        };
+        var contentString = `
+          <strong><%= fountains.location %></strong>
+          <p><%= fountains.description %></p>
+        `;
+        var infowindow = new google.maps.InfoWindow({
+          content: contentString
+        });
+        var marker = new google.maps.Marker({
+            position: center,
+            map: map
+        });
+        marker.addListener('click', function() {
+          infowindow.open(map, marker);
+        });
+      }
     </script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRbwquTPVaovtmiTFmYdedetxliONKD5Q&callback=initMap">
