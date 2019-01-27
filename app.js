@@ -8,7 +8,7 @@ var app = express();
 mongoose.connect(process.env.DATABASEURL);
 
 app.get("/", function(req, res) {
-    Fountain.findOne({}).exec(function(err, allFountains) {
+    Fountain.find({}).exec(function(err, allFountains) {
         if (err) {
             console.log(err);
         } else {
