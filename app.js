@@ -6,6 +6,7 @@ var mongoose = require("mongoose");
 var app = express();
 var path = require("path");
 var NodeGeocoder = require('node-geocoder');
+var bodyParser = require("body-parser");
  
 var options = {
   provider: 'google',
@@ -17,6 +18,8 @@ var options = {
 var geocoder = NodeGeocoder(options);
 
 mongoose.connect(process.env.DATABASEURL);
+
+app.use(bodyParser.urlencoded({extended: true}));
 
 app.engine('html', require('ejs').renderFile);
 
